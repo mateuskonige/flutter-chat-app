@@ -56,14 +56,17 @@ class _HomePageState extends State<HomePage> {
     Map<String, dynamic> userData,
     BuildContext context,
   ) {
-    if (userData["email"] != _authService.getCurrentUser()!.email) {
+    if (userData["email"] != _authService.currentUser!.email) {
       return UserTile(
         title: userData["email"],
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatPage(receiverEmail: userData["email"]),
+              builder: (context) => ChatPage(
+                receiverEmail: userData["email"],
+                receiverId: userData["uid"],
+              ),
             ),
           );
         },
