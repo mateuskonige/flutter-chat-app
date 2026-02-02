@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "644522013305",
+    "project_id": "chat-tutorial-c6393",
+    "storage_bucket": "chat-tutorial-c6393.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644522013305:android:82d3ff3184752038f35aa8",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0B9m4AiSZ9ym8p4m1q_SQWx7AD10iQ5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,23 +4,25 @@ import 'package:chat_app/components/my_text_field.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmationController =
+      TextEditingController();
   final AuthService _authService = AuthService();
 
   String _errorMessage = "";
   bool _isLoading = false;
 
-  Future<void> signUserIn() async {
+  Future<void> signUserUp() async {
     if (_isLoading) return;
 
     setState(() {
@@ -28,8 +30,16 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
+    if (_passwordController.text != _passwordConfirmationController.text) {
+      setState(() {
+        _errorMessage = "Passwords don't match.";
+        _isLoading = false;
+      });
+      return;
+    }
+
     try {
-      await _authService.signIn(
+      await _authService.signUp(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
@@ -49,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _passwordConfirmationController.dispose();
     super.dispose();
   }
 
@@ -58,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            _buildLoginForm(),
+            _buildRegisterForm(),
             Positioned(right: 12, top: 12, child: DarkModeSwitcher()),
             if (_isLoading)
               Container(
@@ -75,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginForm() {
+  Widget _buildRegisterForm() {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -92,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 24),
 
               Text(
-                "Login",
+                "Register",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                 ),
@@ -114,6 +125,14 @@ class _LoginPageState extends State<LoginPage> {
                 obscure: true,
               ),
 
+              SizedBox(height: 12),
+
+              MyTextField(
+                controller: _passwordConfirmationController,
+                text: "Confirm Password",
+                obscure: true,
+              ),
+
               SizedBox(height: 24),
 
               Text(
@@ -121,20 +140,17 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.red, fontSize: 10),
               ),
               MyButton(
-                onTap: () => signUserIn(),
+                onTap: () => signUserUp(),
                 isLoading: _isLoading,
-                title: "Sign In",
+                title: "Sign Up",
               ),
 
               SizedBox(height: 24),
 
-              Text("Not a member?"),
+              Text("Already a member?"),
               GestureDetector(
                 onTap: widget.onTap,
-                child: Text(
-                  "Register now!",
-                  style: TextStyle(color: Colors.blue),
-                ),
+                child: Text("Login now!", style: TextStyle(color: Colors.blue)),
               ),
             ],
           ),
